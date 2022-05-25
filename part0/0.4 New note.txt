@@ -9,7 +9,7 @@ It is an HTTP POST request to the server address new_note.
 The server responds with HTTP status code 302.
 end note
 
-server->browser: URL redirect
+server-->browser: URL redirect
 
 note over browser:
 This is a URL redirect, with which the server asks the browser
