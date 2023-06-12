@@ -1,7 +1,7 @@
-const Person = ({ person, deltePerson }) => {
+const Person = ({ person, deletePerson }) => {
     const handleDelete = () => {
         if (window.confirm(`Delete ${person.name}?`)) {
-            deltePerson(person.id);
+            deletePerson(person.id);
         }
     };
 
@@ -13,12 +13,12 @@ const Person = ({ person, deltePerson }) => {
     );
 };
 
-const Persons = ({ persons, searchName, deltePerson }) => {
+const Persons = ({ persons, searchName, deletePerson }) => {
     const filterPersons = persons.filter(person => person.name.toLowerCase().includes(searchName.toLowerCase()));
 
     return (
         <div>
-            {filterPersons.map(person => <Person person={person} deltePerson={deltePerson} key={person.id} />)}
+            {filterPersons.map(person => <Person person={person} deletePerson={deletePerson} key={person.id} />)}
         </div>
     );
 };

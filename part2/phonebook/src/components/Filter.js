@@ -1,4 +1,5 @@
 const Filter = ({ searchName, handleSearchChange }) => {
+
     return (
         <div>
             filter shown with <input

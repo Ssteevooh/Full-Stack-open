@@ -5,6 +5,7 @@ const PersonForm = ({
     newPhonenumber,
     handlePhonenumberChange
 }) => {
+
     return (
         <form onSubmit={addPerson}>
             <div>

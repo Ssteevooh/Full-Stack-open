@@ -17,18 +17,12 @@
     },
     {
       "name": "Mary Poppendieck",
-      "phonenumber": "39-23-6423122",
       "id": 4
     },
     {
       "name": "Steve",
       "phonenumber": "040-123457",
       "id": 5
-    },
-    {
-      "name": "Test",
-      "phonenumber": "39-44-5323521",
-      "id": 6
     }
   ]
 }
