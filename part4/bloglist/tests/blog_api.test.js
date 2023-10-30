@@ -57,11 +57,32 @@ describe('Blog API POST Requests', () => {
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
-        const blogsInEnd = await helper.blogsInDB()
-        expect(blogsInEnd).toHaveLength(helper.initialBlogs.length + 1)
+        const blogsAtEnd = await helper.blogsInDB()
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
-        const titles = blogsInEnd.map(blog => blog.title)
+        const titles = blogsAtEnd.map(blog => blog.title)
         expect(titles).toContain('New title')
+    })
+
+    test('Blog without likes is not added', async () => {
+        const newBlog = {
+            _id: "5a422aa71b54a676236d28f7",
+            title: 'New title',
+            author: 'Steve Hommy',
+            url: 'https://www.google.com/',
+            __v: 0
+        }
+
+        const response = await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(201)
+
+        const addedBlog = response.body
+        expect(addedBlog.likes).toBe(0)
+
+        const blogInDB = await Blog.findById(addedBlog.id)
+        expect(blogInDB.likes).toBe(0)
     })
 })
 
