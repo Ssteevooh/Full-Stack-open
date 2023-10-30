@@ -133,6 +133,29 @@ describe('Blog API DELETER Request', () => {
     })
 })
 
+describe('Blog API PUT Request', () => {
+    test('Updating the information of an individual blog post', async () => {
+        const blogAtStart = await helper.blogsInDB()
+        const blogToUpdate = blogAtStart[0]
+
+        const updatedBlog = {
+            title: "Updated title",
+            author: "Steve Hommy",
+            url: "https://www.updatedurl.com/",
+            likes: "15"
+        }
+
+        const response = await api
+            .put(`/api/blogs/${blogToUpdate.id}`)
+            .send(updatedBlog)
+            .expect(200)
+
+        const blogsAtEnd = await helper.blogsInDB()
+        expect(response.body.title).toBe(updatedBlog.title)
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    })
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })
