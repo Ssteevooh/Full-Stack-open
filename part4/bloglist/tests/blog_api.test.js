@@ -31,7 +31,7 @@ describe('Blog API GET Requests', () => {
         expect(titles).toContain('Full Stack Open Part4')
     })
 
-    test('Verify the existence of the id property', async () => {
+    test('Verify the existence of the "id" property', async () => {
         const response = await api.get('/api/blogs')
         const blogs = response.body
         blogs.forEach(blog => {
@@ -64,7 +64,7 @@ describe('Blog API POST Requests', () => {
         expect(titles).toContain('New title')
     })
 
-    test('Blog without likes is not added', async () => {
+    test('Blog without "likes" property defaults to 0', async () => {
         const newBlog = {
             _id: "5a422aa71b54a676236d28f7",
             title: 'New title',
@@ -84,6 +84,37 @@ describe('Blog API POST Requests', () => {
         const blogInDB = await Blog.findById(addedBlog.id)
         expect(blogInDB.likes).toBe(0)
     })
+
+    test('Blog without "title" properties responds status 400', async () => {
+        const newBlog = {
+            _id: "5a422aa62b54a676234d17f9",
+            author: "Steve Hommy",
+            url: "https://www.google.com/",
+            likes: 5,
+            __v: 0
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+    })
+
+    test('Blog without "url" properties responds status 400', async () => {
+        const newBlog = {
+            _id: "5a422aa62b54a676234d17f9",
+            title: 'New title',
+            author: "Steve Hommy",
+            likes: 5,
+            __v: 0
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+    })
+
 })
 
 afterAll(async () => {
