@@ -43,7 +43,7 @@ describe('Blog API GET Requests', () => {
 describe('Blog API POST Requests', () => {
     test('Successfully creates a new blog post', async () => {
         const newBlog = {
-            _id: "5a422aa71b54a676236d28f7",
+            _id: '5a422aa71b54a676236d28f7',
             title: 'New title',
             author: 'Steve Hommy',
             url: 'https://www.google.com/',
@@ -66,7 +66,7 @@ describe('Blog API POST Requests', () => {
 
     test('Blog without "likes" property defaults to 0', async () => {
         const newBlog = {
-            _id: "5a422aa71b54a676236d28f7",
+            _id: '5a422aa71b54a676236d28f7',
             title: 'New title',
             author: 'Steve Hommy',
             url: 'https://www.google.com/',
@@ -87,9 +87,9 @@ describe('Blog API POST Requests', () => {
 
     test('Blog without "title" properties responds status 400', async () => {
         const newBlog = {
-            _id: "5a422aa62b54a676234d17f9",
-            author: "Steve Hommy",
-            url: "https://www.google.com/",
+            _id: '5a422aa62b54a676234d17f9',
+            author: 'Steve Hommy',
+            url: 'https://www.google.com/',
             likes: 5,
             __v: 0
         }
@@ -102,9 +102,9 @@ describe('Blog API POST Requests', () => {
 
     test('Blog without "url" properties responds status 400', async () => {
         const newBlog = {
-            _id: "5a422aa62b54a676234d17f9",
+            _id: '5a422aa62b54a676234d17f9',
             title: 'New title',
-            author: "Steve Hommy",
+            author: 'Steve Hommy',
             likes: 5,
             __v: 0
         }
@@ -139,10 +139,10 @@ describe('Blog API PUT Request', () => {
         const blogToUpdate = blogAtStart[0]
 
         const updatedBlog = {
-            title: "Updated title",
-            author: "Steve Hommy",
-            url: "https://www.updatedurl.com/",
-            likes: "15"
+            title: 'Updated title',
+            author: 'Steve Hommy',
+            url: 'https://www.updatedurl.com/',
+            likes: '15'
         }
 
         const response = await api
