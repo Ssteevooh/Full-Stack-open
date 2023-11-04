@@ -1,4 +1,5 @@
 MONGODB_URL=mongodb+srv://<USERNAME>:<PASSWORD>@cluster0.z2oh4eu.mongodb.net/<DATABASENAME>?retryWrites=true&w=majority
 PORT=3003
+SECRET=<ANYSTRING>
 
 TEST_MONGODB_URL=mongodb+srv://<USERNAME>:<PASSWORD>@cluster0.z2oh4eu.mongodb.net/<TESTDATABASENAME>?retryWrites=true&w=majority
