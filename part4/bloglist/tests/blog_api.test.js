@@ -5,11 +5,43 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const helper = require('./test_helper')
+
+let userDetail
+
+beforeEach(async () => {
+    await User.deleteMany({})
+
+    await api
+        .post('/api/users')
+        .send({
+            username: 'steve',
+            name: 'Superuser',
+            password: 'salainen'
+        })
+
+    const userLogin = await api
+        .post('/api/login')
+        .send({
+            username: 'steve',
+            password: 'salainen'
+        })
+
+    userDetail = userLogin.body
+})
 
 beforeEach(async () => {
     await Blog.deleteMany({})
-    await Blog.insertMany(helper.initialBlogs)
+
+    for (const blog of helper.initialBlogs) {
+        await api
+            .post('/api/blogs')
+            .set('Authorization', 'Bearer ' + userDetail.token)
+            .send(blog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+    }
 })
 
 describe('Blog API GET Requests', () => {
@@ -53,6 +85,7 @@ describe('Blog API POST Requests', () => {
 
         await api
             .post('/api/blogs')
+            .set('Authorization', 'Bearer ' + userDetail.token)
             .send(newBlog)
             .expect(201)
             .expect('Content-Type', /application\/json/)
@@ -75,6 +108,7 @@ describe('Blog API POST Requests', () => {
 
         const response = await api
             .post('/api/blogs')
+            .set('Authorization', 'Bearer ' + userDetail.token)
             .send(newBlog)
             .expect(201)
 
@@ -96,6 +130,7 @@ describe('Blog API POST Requests', () => {
 
         await api
             .post('/api/blogs')
+            .set('Authorization', 'Bearer ' + userDetail.token)
             .send(newBlog)
             .expect(400)
     })
@@ -111,8 +146,28 @@ describe('Blog API POST Requests', () => {
 
         await api
             .post('/api/blogs')
+            .set('Authorization', 'Bearer ' + userDetail.token)
             .send(newBlog)
             .expect(400)
+    })
+
+    test('Blog without token responds status 401', async () => {
+        const blogAtStart = await helper.blogsInDB()
+        const newBlog = {
+            _id: '5a422aa62b55a679324d17f1',
+            title: 'New title',
+            author: 'Steve Hommy',
+            likes: 5,
+            __v: 0
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(401)
+
+        const blogsAtEnd = await helper.blogsInDB()
+        expect(blogsAtEnd).toHaveLength(blogAtStart.length)
     })
 })
 
@@ -123,6 +178,7 @@ describe('Blog API DELETER Request', () => {
 
         await api
             .delete(`/api/blogs/${blogToDelete.id}`)
+            .set('Authorization', 'Bearer ' + userDetail.token)
             .expect(204)
 
         const blogsAtEnd = await helper.blogsInDB()
